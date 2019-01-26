@@ -3412,7 +3412,7 @@
     "showQuickUse2": true,
     "showSVGs": true,
     "fontPref": {
-      "prefix": "vs-",
+      "prefix": "tci-",
       "metadata": {
         "fontFamily": "TableCheck Icons",
         "majorVersion": 1,
