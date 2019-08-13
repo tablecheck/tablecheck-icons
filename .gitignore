@@ -3,4 +3,7 @@
 /tmp
 /node_modules
 /js
+/fonts
 /tests/__image_snapshots__/__diff_output__
+/tests/__image_snapshots__/docs-icon-font-visual-regression-test-snap.png
+/tests/__image_snapshots__/docs-js-export-visual-regression-test-snap.png
