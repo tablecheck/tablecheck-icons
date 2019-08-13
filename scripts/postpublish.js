@@ -6,5 +6,7 @@ const glob = require('glob');
 console.log(colors.blue('Cleaning up export files'));
 
 glob(path.join(process.cwd(), '*.js'), {}, (err, files) => {
-  files.forEach((filePath) => fs.removeSync(filePath));
+  files
+    .filter((filePath) => !/\.config\.js$/gi.test(path.basename(filePath)))
+    .forEach((filePath) => fs.removeSync(filePath));
 });
