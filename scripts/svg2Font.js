@@ -8,6 +8,7 @@ const ttf2eot = require('ttf2eot');
 const startCase = require('lodash/startCase');
 const { prefix, tcColor } = require('./constants');
 const glyphsConfig = require('./loadGlyphsConfig.js');
+const { ICONS_PER_ROW } = require('./getOrderedPages');
 
 fs.ensureDirSync(path.join(process.cwd(), 'fonts'));
 
@@ -100,12 +101,13 @@ stream.pipe(fs.createWriteStream(files.svg)).on('finish', () => {
   <head>
     <title>${outputName}</title>
     <style type="text/css">
-      body { font-size: 16pt; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol; margin: 40px; }
+      body { font-size: 24px; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol; margin: 40px; }
       h1 { margin-bottom: 0; }
       .sample { width: 100%; display: flex; flex-wrap: wrap; }
       .sample h2 { width: 100%; display: flex; }
-      .sample .icon { width: 20%; display: inline-flex; }
-      .sample .icon i { width: 20%; display: inline-block; color: ${tcColor}; }
+      .sample .icon { width: ${100 /
+        ICONS_PER_ROW}%; height: 52px; display: flex; align-items: flex-start; }
+      .sample .icon i { width: 42px; font-size: 28px; display: inline-block; color: ${tcColor}; }
       .sample .icon span { width: auto; display: inline-block; }
     </style>
     <link href="${outputName}.css" rel="stylesheet" type="text/css" />

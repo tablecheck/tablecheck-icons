@@ -32,7 +32,7 @@
     "build": "npm run build:fonts && npm run build:js",
     "build:fonts": "node scripts/svg2Font.js",
     "build:js": "node scripts/svg2Js.js",
-    "build:docs": "NODE_ENV=docs npm test && NODE_ENV=docs node scripts/buildDocs.js",
+    "build:docs": "NODE_ENV=docs npm test; NODE_ENV=docs node scripts/buildDocs.js",
     "clean": "node scripts/postpublish.js",
     "prepublishOnly": "node scripts/prepublish.js",
     "test": "npm run build && jest --ci=false",
