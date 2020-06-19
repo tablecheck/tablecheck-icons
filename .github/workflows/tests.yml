@@ -7,12 +7,20 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  commitlint:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v1
 
+  test:
     runs-on: macos-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,7 +31,6 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm test
-      - uses: wagoid/commitlint-github-action@v1
       - name: The job has failed
         if: ${{ failure() }}
         run: npm run ci-failed-test
