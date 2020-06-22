@@ -1,3 +1,13 @@
 {
-  "couple-alt": ["male-female"]
+  "couple-alt": ["male-female"],
+  "gantt-light": ["gantt-o"],
+  "gantt-solid": ["gantt"],
+  "table-solid": ["table"],
+  "table-regular": ["table-o"],
+  "tables-light": ["tables-o"],
+  "tables-solid": ["tables"],
+  "timeslots-light": ["timeslots-o"],
+  "timeslots-solid": ["timeslots"],
+  "floors-light": ["floors-o"],
+  "floors-solid": ["floors"]
 }
