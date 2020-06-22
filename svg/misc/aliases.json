@@ -7,5 +7,5 @@
   "tables-light": ["tables-o"],
   "tables-solid": ["tables"],
   "timeslots-light": ["timeslots-o"],
-  "timeslots-regular": ["timeslots"]
+  "timeslots-solid": ["timeslots"]
 }
