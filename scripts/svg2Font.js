@@ -6,9 +6,10 @@ const svg2ttf = require('svg2ttf');
 const ttf2woff = require('ttf2woff');
 const ttf2eot = require('ttf2eot');
 const startCase = require('lodash/startCase');
-const { prefix, tcColor } = require('./constants');
+const { ICON_CLASSNAME_PREFIX, TC_COLOR } = require('./constants');
 const glyphsConfig = require('./loadGlyphsConfig.js');
-const { ICONS_PER_ROW } = require('./getOrderedPages');
+
+const ICONS_PER_ROW = 4;
 
 fs.ensureDirSync(path.join(process.cwd(), 'fonts'));
 
@@ -50,8 +51,8 @@ let cssContent = `/*
   font-variant: normal;
 }
 
-[class^="${prefix}-"]:before, 
-[class*="${prefix}-"]:before {
+[class^="${ICON_CLASSNAME_PREFIX}-"]:before, 
+[class*="${ICON_CLASSNAME_PREFIX}-"]:before {
   font-family: "${outputName}";
   font-style: normal;
   font-weight: normal;
@@ -107,7 +108,7 @@ stream.pipe(fs.createWriteStream(files.svg)).on('finish', () => {
       .sample h2 { width: 100%; display: flex; }
       .sample .icon { width: ${100 /
         ICONS_PER_ROW}%; height: 52px; display: flex; align-items: flex-start; }
-      .sample .icon i { width: 42px; font-size: 28px; display: inline-block; color: ${tcColor}; }
+      .sample .icon i { width: 42px; font-size: 28px; display: inline-block; color: ${TC_COLOR}; }
       .sample .icon span { width: auto; display: inline-block; }
     </style>
     <link href="${outputName}.css" rel="stylesheet" type="text/css" />
@@ -146,14 +147,14 @@ stream.pipe(fs.createWriteStream(files.svg)).on('finish', () => {
 
 glyphsConfig.forEach(({ glyph, name, code, category }) => {
   cssContent += `
-.${prefix}-${name}:before {
+.${ICON_CLASSNAME_PREFIX}-${name}:before {
   content: "${code}"
 }
 `;
   htmlContent.push([
     category,
     name,
-    `<div class="icon"><i class="${prefix}-${name}"></i><span>${prefix}-${name}</span></div>`
+    `<div class="icon"><i class="${ICON_CLASSNAME_PREFIX}-${name}"></i><span>${ICON_CLASSNAME_PREFIX}-${name}</span></div>`
   ]);
 
   const iconStream = fs.createReadStream(glyph);

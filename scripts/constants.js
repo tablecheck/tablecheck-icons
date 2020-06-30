@@ -1,10 +1,20 @@
+const ICONS_PER_ROW = 4;
+const FONT_SIZE = 24;
+
 module.exports = {
-  prefix: 'tci',
-  tcColor: '#7e5bef',
-  jsImageFilename: `${
-    process.env.NODE_ENV === 'docs' ? `docs-` : ''
-  }js-export-visual-regression-test`,
-  cssImageFilename: `${
-    process.env.NODE_ENV === 'docs' ? `docs-` : ''
-  }icon-font-visual-regression-test`
+  TC_COLOR: '#7e5bef',
+  ICON_CLASSNAME_PREFIX: 'tci',
+  JS_IMAGE_FILENAME: 'js-modules.png',
+  CSS_IMAGE_FILENAME: 'css-font.png',
+  ICONS_PER_ROW,
+  COLUMNS: ICONS_PER_ROW * 2,
+  COLUMN_WIDTH: 180,
+  FONT_SIZE,
+  HEADER_HEIGHT: 42,
+  HEADER_MARGIN: 24,
+  GUTTER: 10,
+  TEXT_HEIGHT: FONT_SIZE,
+  ICON_MULTIPLIER: 4,
+  PAGE_PADDING: 200,
+  ROW_HEIGHT: 52
 };

@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const cheerio = require('cheerio');
 const camelCase = require('lodash/camelCase');
-const { prefix } = require('./constants');
+const { ICON_CLASSNAME_PREFIX } = require('./constants');
 const glyphsConfig = require('./loadGlyphsConfig.js');
 
 console.log(colors.blue('Building JS Export files'));
@@ -29,7 +29,7 @@ const iconKeys = glyphsConfig.map(({ glyph: filePath, name, code }) => {
   }
 
   const definition = {
-    key: camelCase(`${prefix}-${name}`),
+    key: camelCase(`${ICON_CLASSNAME_PREFIX}-${name}`),
     name: camelCase(name),
     width: svg.attr('width'),
     height: svg.attr('height'),
@@ -37,14 +37,14 @@ const iconKeys = glyphsConfig.map(({ glyph: filePath, name, code }) => {
   };
 
   iconDefinitions[definition.key] = `{
-    prefix: '${prefix}',
+    ICON_CLASSNAME_PREFIX: '${ICON_CLASSNAME_PREFIX}',
     iconName: '${definition.name}',
     icon: [${definition.width}, ${definition.height}, [], '${code}', '${definition.path}']
   }`;
 
   const fileContent = `'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
-var prefix = '${prefix}';
+var prefix = '${ICON_CLASSNAME_PREFIX}';
 var iconName = '${definition.name}';
 var width = ${definition.width};
 var height = ${definition.height};
@@ -87,7 +87,7 @@ const indexFileHeader = `(function (global, factory) {
   (factory((global['tablecheck-svg-icons'] = {})));
 }(this, (function (exports) { 'use strict';
 
-  var prefix = '${prefix}';`;
+  var prefix = '${ICON_CLASSNAME_PREFIX}';`;
 const indexFileFooter = `
   Object.defineProperty(exports, '__esModule', { value: true });
 })));`;
@@ -95,7 +95,7 @@ const iconsCacheContent = `
   var _iconsCache = {
     ${iconKeys.map((key) => `${key}: ${key}`).join(',\n    ')}
   }`;
-const exportsContent = [`${prefix} = _iconsCache`, `prefix = prefix`]
+const exportsContent = [`${ICON_CLASSNAME_PREFIX} = _iconsCache`, `prefix = prefix`]
   .concat(iconKeys.map((key) => `${key} = ${key}`))
   .map((line) => `  exports.${line};`)
   .join('\n');
@@ -107,12 +107,12 @@ ${exportsContent}
 ${indexFileFooter}
 `;
 
-const esContent = `var prefix = '${prefix}';
+const esContent = `var prefix = '${ICON_CLASSNAME_PREFIX}';
 ${iconKeys
   .map((key) => `var ${key} = ${iconDefinitions[key].replace(/  /gi, ' ')};`)
   .join('\n')}
 ${iconsCacheContent.replace(/  /gi, ' ')}
-export { _iconsCache as ${prefix}, prefix, ${iconKeys.join(', ')} };
+export { _iconsCache as ${ICON_CLASSNAME_PREFIX}, prefix, ${iconKeys.join(', ')} };
 `;
 
 fs.writeFileSync(path.join(process.cwd(), 'js/index.js'), indexContent, {

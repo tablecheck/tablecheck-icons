@@ -31,6 +31,3 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm test
-      - name: The job has failed
-        if: ${{ failure() }}
-        run: npm run ci-failed-test
