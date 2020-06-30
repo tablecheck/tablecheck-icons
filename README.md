@@ -47,7 +47,8 @@ When adding new icons keep these steps in mind;
 * Each SVG must have ONLY 1 path - multiple paths will be combined into one.
 * Use the `non-zero` method for creating hollowed out inserts (for example 1-square.svg), _**DO NOT**_ use `even-odd`. 
 * Run the conversion script to clean up the icon formats; `npm run convert ./file/glob/**/*.svg`
-* Run the tests to check the rendering and to update the images used in this README. - **MUST USE OSX OR TRAVIS-CI WILL FAIL**
+* Run `npm run build` to generate the font files and js files
+* Run `npm run build:images` to generate the icon screenshots used in this readme, please doublecheck this image to make sure your icons were added successfully.
 
 #### FontAwesome Duotone Note
 
