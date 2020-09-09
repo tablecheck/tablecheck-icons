@@ -2,13 +2,13 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const dirList = fs.readdirSync(path.join(process.cwd(), 'svg'), {
-  withFileTypes: true
+  withFileTypes: true,
 });
 const aliasFilename = 'aliases.json';
 
 const unicodeMap =
   fs.readJsonSync(path.join(process.cwd(), 'svg/unicodeMap.json'), {
-    throws: false
+    throws: false,
   }) || {};
 const inUseMap = {};
 let maxCodeValue = Object.keys(unicodeMap).reduce(
@@ -24,10 +24,7 @@ function getUnicode(key) {
     value = maxCodeValue;
   }
   inUseMap[key] = value;
-  return `0x${value
-    .toString(16)
-    .padStart(4, '0')
-    .toUpperCase()}`;
+  return `0x${value.toString(16).padStart(4, '0').toUpperCase()}`;
 }
 
 const glyphsConfig = dirList.reduce((glyphs, dirOrFile) => {
@@ -48,8 +45,8 @@ const glyphsConfig = dirList.reduce((glyphs, dirOrFile) => {
           glyph: glyphPath,
           name,
           category: dirName,
-          code: getUnicode(name)
-        }
+          code: getUnicode(name),
+        },
       ];
       if (aliases[name]) {
         aliases[name].forEach((aliasName) => {
@@ -57,7 +54,7 @@ const glyphsConfig = dirList.reduce((glyphs, dirOrFile) => {
             glyph: glyphPath,
             name: aliasName,
             category: dirName,
-            code: getUnicode(aliasName)
+            code: getUnicode(aliasName),
           });
         });
       }
@@ -67,7 +64,7 @@ const glyphsConfig = dirList.reduce((glyphs, dirOrFile) => {
 }, []);
 
 fs.writeJsonSync(path.join(process.cwd(), 'svg/unicodeMap.json'), inUseMap, {
-  spaces: 2
+  spaces: 2,
 });
 
 module.exports = glyphsConfig;

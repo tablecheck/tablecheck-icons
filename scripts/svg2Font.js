@@ -26,7 +26,7 @@ const stream = new svgicons2svgfont({
   error: (err) => {
     console.error('Error Generating SVG Font'.red.bold);
     console.error(err);
-  }
+  },
 });
 
 const cssSrc = [
@@ -34,7 +34,7 @@ const cssSrc = [
   `url("${outputName}.eot?#iefix") format("embedded-opentype")`,
   `url("${outputName}.woff") format("woff")`,
   `url("${outputName}.svg") format("svg")`,
-  `url("${outputName}.ttf") format("truetype")`
+  `url("${outputName}.ttf") format("truetype")`,
 ].join(', ');
 
 let cssContent = `/*
@@ -106,8 +106,9 @@ stream.pipe(fs.createWriteStream(files.svg)).on('finish', () => {
       h1 { margin-bottom: 0; }
       .sample { width: 100%; display: flex; flex-wrap: wrap; }
       .sample h2 { width: 100%; display: flex; }
-      .sample .icon { width: ${100 /
-        ICONS_PER_ROW}%; height: 52px; display: flex; align-items: flex-start; }
+      .sample .icon { width: ${
+        100 / ICONS_PER_ROW
+      }%; height: 52px; display: flex; align-items: flex-start; }
       .sample .icon i { width: 42px; font-size: 28px; display: inline-block; color: ${TC_COLOR}; }
       .sample .icon span { width: auto; display: inline-block; }
     </style>
@@ -154,13 +155,13 @@ glyphsConfig.forEach(({ glyph, name, code, category }) => {
   htmlContent.push([
     category,
     name,
-    `<div class="icon"><i class="${ICON_CLASSNAME_PREFIX}-${name}"></i><span>${ICON_CLASSNAME_PREFIX}-${name}</span></div>`
+    `<div class="icon"><i class="${ICON_CLASSNAME_PREFIX}-${name}"></i><span>${ICON_CLASSNAME_PREFIX}-${name}</span></div>`,
   ]);
 
   const iconStream = fs.createReadStream(glyph);
   iconStream.metadata = {
     name,
-    unicode: [code]
+    unicode: [code],
   };
   stream.write(iconStream);
 });

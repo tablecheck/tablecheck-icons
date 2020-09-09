@@ -16,5 +16,5 @@ module.exports = {
   TEXT_HEIGHT: FONT_SIZE,
   ICON_MULTIPLIER: 4,
   PAGE_PADDING: 200,
-  ROW_HEIGHT: 52
+  ROW_HEIGHT: 52,
 };

@@ -33,11 +33,11 @@ const iconKeys = glyphsConfig.map(({ glyph: filePath, name, code }) => {
     name: camelCase(name),
     width: svg.attr('width'),
     height: svg.attr('height'),
-    path: paths.join(' ')
+    path: paths.join(' '),
   };
 
   iconDefinitions[definition.key] = `{
-    ICON_CLASSNAME_PREFIX: '${ICON_CLASSNAME_PREFIX}',
+    prefix: '${ICON_CLASSNAME_PREFIX}',
     iconName: '${definition.name}',
     icon: [${definition.width}, ${definition.height}, [], '${code}', '${definition.path}']
   }`;
@@ -95,7 +95,10 @@ const iconsCacheContent = `
   var _iconsCache = {
     ${iconKeys.map((key) => `${key}: ${key}`).join(',\n    ')}
   }`;
-const exportsContent = [`${ICON_CLASSNAME_PREFIX} = _iconsCache`, `prefix = prefix`]
+const exportsContent = [
+  `${ICON_CLASSNAME_PREFIX} = _iconsCache`,
+  `prefix = prefix`,
+]
   .concat(iconKeys.map((key) => `${key} = ${key}`))
   .map((line) => `  exports.${line};`)
   .join('\n');
@@ -112,14 +115,16 @@ ${iconKeys
   .map((key) => `var ${key} = ${iconDefinitions[key].replace(/  /gi, ' ')};`)
   .join('\n')}
 ${iconsCacheContent.replace(/  /gi, ' ')}
-export { _iconsCache as ${ICON_CLASSNAME_PREFIX}, prefix, ${iconKeys.join(', ')} };
+export { _iconsCache as ${ICON_CLASSNAME_PREFIX}, prefix, ${iconKeys.join(
+  ', '
+)} };
 `;
 
 fs.writeFileSync(path.join(process.cwd(), 'js/index.js'), indexContent, {
-  encoding: 'utf8'
+  encoding: 'utf8',
 });
 fs.writeFileSync(path.join(process.cwd(), 'js/index.es.js'), esContent, {
-  encoding: 'utf8'
+  encoding: 'utf8',
 });
 
 if (badIcons.length) {
