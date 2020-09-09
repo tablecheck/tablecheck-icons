@@ -37,7 +37,8 @@
     "prepublishOnly": "node scripts/prepublish.js",
     "test": "npm run build",
     "convert": "node scripts/svgConverter.js",
-    "ci-failed-test": "node scripts/ciTestFail.js"
+    "ci-failed-test": "node scripts/ciTestFail.js",
+    "format": "prettier --write tests/*.js scripts/*.js scripts/*.jsx"
   },
   "release": {
     "plugins": [
@@ -71,9 +72,9 @@
     "jest": "24.8.0",
     "jsdom": "16.2.2",
     "jsdom-screenshot": "3.2.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.20",
     "path": "0.12.7",
-    "prettier": "1.18.2",
+    "prettier": "2.1.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "svg2ttf": "4.3.0",

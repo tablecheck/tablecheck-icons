@@ -24,18 +24,20 @@ const {
   TEXT_HEIGHT,
   ICON_MULTIPLIER,
   PAGE_PADDING,
-  ROW_HEIGHT
+  ROW_HEIGHT,
 } = require('./constants');
 
 const DOCS_PATH = path.join(process.cwd(), 'docs');
 
 const makeDocument = () => {
-  const { window } = new JSDOM('<!DOCTYPE html><body><div id="root"></div></body></html>');
+  const { window } = new JSDOM(
+    '<!DOCTYPE html><body><div id="root"></div></body></html>'
+  );
   const { document } = window;
   global.window = window;
   global.document = document;
   return document;
-}
+};
 
 const generateCssFontImage = async () => {
   const document = makeDocument();
@@ -58,15 +60,14 @@ const generateCssFontImage = async () => {
       currentSectionIconsCount += 1;
     }
   }
-  height +=
-    Math.ceil(currentSectionIconsCount / ICONS_PER_ROW) * ROW_HEIGHT;
+  height += Math.ceil(currentSectionIconsCount / ICONS_PER_ROW) * ROW_HEIGHT;
 
   // Take screenshot with generateImage()
   const screenshot = await generateImage({
     launch: {
-      defaultViewport: { width: 1280, height }
+      defaultViewport: { width: 1280, height },
     },
-    serve: ['fonts']
+    serve: ['fonts'],
   });
 
   fs.writeFileSync(`${DOCS_PATH}/${CSS_IMAGE_FILENAME}`, screenshot);
@@ -92,7 +93,7 @@ const generateJsModulesImage = async () => {
             require(`../js/${camelCase(
               `${ICON_CLASSNAME_PREFIX}-${path.parse(filename).name}`
             )}`)
-          )
+          ),
       };
     });
 
@@ -106,7 +107,7 @@ const generateJsModulesImage = async () => {
             width: '100%',
             display: 'flex',
             flexWrap: 'wrap',
-            justifyContent: 'flex-start'
+            justifyContent: 'flex-start',
           }}
         >
           <h2
@@ -118,12 +119,14 @@ const generateJsModulesImage = async () => {
               lineHeight: `${HEADER_HEIGHT}px`,
               marginBottom: HEADER_MARGIN,
               marginLeft: HEADER_MARGIN,
-              boxSizing: 'border-box'
+              boxSizing: 'border-box',
             }}
           >
             {header}
           </h2>
           {icons.map(({ prefix, definition, iconName }) => (
+            // ensure that the maxHeight and height match the FontAwesomeIcon size
+            // this fixes a flexbox bug in jsdom
             <div
               key={iconName}
               style={{
@@ -133,13 +136,14 @@ const generateJsModulesImage = async () => {
                 textAlign: 'center',
                 width: COLUMN_WIDTH,
                 padding: GUTTER,
-                boxSizing: 'border-box'
+                boxSizing: 'border-box',
               }}
             >
               <FontAwesomeIcon
                 icon={definition}
                 color={TC_COLOR}
                 size={`${ICON_MULTIPLIER}x`}
+                style={{ maxHeight: 64, height: 64 }}
               />
               <div
                 style={{
@@ -148,13 +152,13 @@ const generateJsModulesImage = async () => {
                   fontSize: TEXT_HEIGHT,
                   lineHeight: `${TEXT_HEIGHT}px`,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}
               >
                 <span
                   style={{
                     display: 'inline-flex',
-                    wordBreak: 'break-all'
+                    wordBreak: 'break-all',
                   }}
                 >
                   {camelCase(`${prefix}-${iconName}`)}
@@ -184,9 +188,9 @@ const generateJsModulesImage = async () => {
     launch: {
       defaultViewport: {
         width: COLUMN_WIDTH * COLUMNS,
-        height
-      }
-    }
+        height,
+      },
+    },
   });
 
   fs.writeFileSync(`${DOCS_PATH}/${JS_IMAGE_FILENAME}`, screenshot);

@@ -22,9 +22,7 @@ globs.forEach((fileOrGlob) => {
     files.forEach((file) => {
       const filePath = path.resolve(process.cwd(), file);
       const $ = cheerio.load(fs.readFileSync(filePath));
-      const [x, y, width, height] = $('svg')
-        .attr('viewBox')
-        .split(' ');
+      const [x, y, width, height] = $('svg').attr('viewBox').split(' ');
       const paths = $('path')
         .map((i, el) => $(el).attr('d'))
         .get();
