@@ -27,7 +27,8 @@
   "files": [
     "fonts",
     "svg",
-    "*.js"
+    "*.js",
+    "definitions.d.ts"
   ],
   "scripts": {
     "build": "npm run build:fonts && npm run build:js",
