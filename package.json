@@ -23,6 +23,7 @@
   "homepage": "https://github.com/tablecheck/tablecheck-icons#readme",
   "main": "index.js",
   "module": "index.es.js",
+  "types": "definitions.d.ts",
   "files": [
     "fonts",
     "svg",
@@ -38,7 +39,7 @@
     "test": "npm run build",
     "convert": "node scripts/svgConverter.js",
     "ci-failed-test": "node scripts/ciTestFail.js",
-    "format": "prettier --write tests/*.js scripts/*.js scripts/*.jsx"
+    "format": "prettier --write tests/*.js scripts/*.js scripts/*.jsx scripts/*.ts"
   },
   "release": {
     "plugins": [
@@ -52,6 +53,9 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "optionalDependencies": {
+    "@fortawesome/fontawesome-common-types": "^0.2.32"
+  },
   "devDependencies": {
     "@babel/core": "7.5.5",
     "@babel/node": "7.10.3",
@@ -60,6 +64,7 @@
     "@commitlint/cli": "8.1.0",
     "@commitlint/config-conventional": "8.1.0",
     "@commitlint/travis-cli": "8.1.0",
+    "@fortawesome/fontawesome-common-types": "0.2.32",
     "@fortawesome/fontawesome-svg-core": "1.2.21",
     "@fortawesome/react-fontawesome": "0.1.4",
     "@semantic-release/release-notes-generator": "7.3.0",
@@ -74,7 +79,7 @@
     "jsdom-screenshot": "3.2.0",
     "lodash": "4.17.20",
     "path": "0.12.7",
-    "prettier": "2.1.1",
+    "prettier": "2.2.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "svg2ttf": "4.3.0",

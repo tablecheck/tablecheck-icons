@@ -11,38 +11,44 @@ console.log(colors.blue('Building JS Export files'));
 fs.ensureDirSync(path.join(process.cwd(), 'js'));
 fs.emptyDirSync(path.join(process.cwd(), 'js'));
 
+const tsDefinitionBase = fs.readFileSync(
+  path.join(process.cwd(), 'scripts', 'definitionsBase.d.ts'),
+  'utf8'
+);
+
 const iconDefinitions = {};
 const badIcons = [];
 
-const iconKeys = glyphsConfig.map(({ glyph: filePath, name, code }) => {
-  const dirName = path.dirname(filePath);
+const { iconKeys, iconNames } = glyphsConfig.reduce(
+  (result, { glyph: filePath, name, code }) => {
+    const dirName = path.dirname(filePath);
 
-  const $ = cheerio.load(fs.readFileSync(filePath));
-  const paths = $('path')
-    .map((i, el) => $(el).attr('d'))
-    .get();
+    const $ = cheerio.load(fs.readFileSync(filePath));
+    const paths = $('path')
+      .map((i, el) => $(el).attr('d'))
+      .get();
 
-  const svg = $('svg');
+    const svg = $('svg');
 
-  if (paths.length !== 1) {
-    badIcons.push(`${dirName}/${name}.svg`);
-  }
+    if (paths.length !== 1) {
+      badIcons.push(`${dirName}/${name}.svg`);
+    }
 
-  const definition = {
-    key: camelCase(`${ICON_CLASSNAME_PREFIX}-${name}`),
-    name: camelCase(name),
-    width: svg.attr('width'),
-    height: svg.attr('height'),
-    path: paths.join(' '),
-  };
+    const definition = {
+      key: camelCase(`${ICON_CLASSNAME_PREFIX}-${name}`),
+      name: camelCase(name),
+      width: svg.attr('width'),
+      height: svg.attr('height'),
+      path: paths.join(' '),
+    };
 
-  iconDefinitions[definition.key] = `{
+    iconDefinitions[definition.key] = `{
     prefix: '${ICON_CLASSNAME_PREFIX}',
     iconName: '${definition.name}',
     icon: [${definition.width}, ${definition.height}, [], '${code}', '${definition.path}']
   }`;
 
-  const fileContent = `'use strict';
+    const fileContent = `'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
 var prefix = '${ICON_CLASSNAME_PREFIX}';
 var iconName = '${definition.name}';
@@ -72,13 +78,17 @@ exports.ligatures = ligatures;
 exports.unicode = unicode;
 exports.svgPathData = svgPathData;
 `;
-  fs.writeFileSync(
-    path.join(process.cwd(), 'js', `${definition.key}.js`),
-    fileContent,
-    { encoding: 'utf8' }
-  );
-  return definition.key;
-});
+    fs.writeFileSync(
+      path.join(process.cwd(), 'js', `${definition.key}.js`),
+      fileContent,
+      { encoding: 'utf8' }
+    );
+    result.iconKeys.push(definition.key);
+    result.iconNames.push(definition.name);
+    return result;
+  },
+  { iconKeys: [], iconNames: [] }
+);
 
 // following code generation is adapted from @fortawesome/free-brands-svg-icons index.js
 const indexFileHeader = `(function (global, factory) {
@@ -120,12 +130,23 @@ export { _iconsCache as ${ICON_CLASSNAME_PREFIX}, prefix, ${iconKeys.join(
 )} };
 `;
 
+const tsDefinitionContent = `${tsDefinitionBase}
+
+export type IconName = ${iconNames.map((key) => `'${key}'`).join(' | \n  ')};`;
+
 fs.writeFileSync(path.join(process.cwd(), 'js/index.js'), indexContent, {
   encoding: 'utf8',
 });
 fs.writeFileSync(path.join(process.cwd(), 'js/index.es.js'), esContent, {
   encoding: 'utf8',
 });
+fs.writeFileSync(
+  path.join(process.cwd(), 'js/definitions.d.ts'),
+  tsDefinitionContent,
+  {
+    encoding: 'utf8',
+  }
+);
 
 if (badIcons.length) {
   console.warn(
