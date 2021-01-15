@@ -78,9 +78,25 @@ exports.ligatures = ligatures;
 exports.unicode = unicode;
 exports.svgPathData = svgPathData;
 `;
+    const definitionContent = `import { IconDefinition, IconPrefix, IconName } from "./definitions";
+export const definition: IconDefinition;
+export const ${definition.key}: IconDefinition;
+export const prefix: IconPrefix;
+export const iconName: IconName;
+export const width: number;
+export const height: number;
+export const ligatures: string[];
+export const unicode: string;
+export const svgPathData: string;
+`;
     fs.writeFileSync(
       path.join(process.cwd(), 'js', `${definition.key}.js`),
       fileContent,
+      { encoding: 'utf8' }
+    );
+    fs.writeFileSync(
+      path.join(process.cwd(), 'js', `${definition.key}.d.ts`),
+      definitionContent,
       { encoding: 'utf8' }
     );
     result.iconKeys.push(definition.key);
