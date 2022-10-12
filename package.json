@@ -83,7 +83,7 @@
     "prettier": "2.2.1",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "svg2ttf": "4.3.0",
+    "svg2ttf": "6.0.3",
     "svgicons2svgfont": "9.1.1",
     "tmp": "0.1.0",
     "ttf2eot": "2.0.0",
